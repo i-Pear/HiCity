@@ -1,97 +1,71 @@
-import os
-import sys
-import time
 import argparse
 import difflib
 from prompt_toolkit import prompt
-from prompt_toolkit.formatted_text import HTML
-from prompt_toolkit.shortcuts import ProgressBar
-
 from AutoComplete import CNameCompleter
-from logger import log
-
-
-def resource_path(relative_path):
-    """
-    Get absolute path to resource, works for dev and for PyInstaller
-    """
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
+import logging
+from DataControl import DataControl
 
 
 class HiCity:
     """
     A module for fast querying codes of cities
     """
-    cities = {}
+    citiesCache = {}
 
-    def __init__(self, dataPath, silent=False):
+    def __init__(self):
         """
         Load city code data
         """
-        with open(resource_path(dataPath), 'r', encoding='UTF-8') as reader:
-            log('Started loading data...')
-            totalRecord = int(reader.readline())
-            with ProgressBar() as pb:
-                if not silent:
-                    label = 'Loading data'
-                    bar = pb(range(1, totalRecord + 1), label=label)
-                else:
-                    bar = range(1, totalRecord + 1)
-                for cntRecord in bar:
-                    if not silent:
-                        time.sleep(0.0001)  # delay for display effects
-                    line = reader.readline()
-                    sp = line.strip().split(',')  # 去除行尾换行并分割
-                    if len(sp) != 2:
-                        continue  # 处理异常数据
-                    if sp[0] in self.cities.keys():  # 如果有重名
-                        self.cities[sp[0]].append(sp[1])
-                    else:
-                        self.cities[sp[0]] = [sp[1]]
-                if not silent:
-                    print('Data loaded successfully.\n')
-                log('Data loaded successfully.')
+        self.completer = CNameCompleter(self.citiesCache.keys())
+        self.db = DataControl()
+        self._allDataLoaded = False
 
-        self.completer = CNameCompleter(self.cities.keys())
+    def loadFullData(self):
+        """
+        Load all data from database to build-in cache dict
+        for functions which needs frequently reading
+        """
+        if self._allDataLoaded:
+            return
+        self._allDataLoaded = True
+        for city in self.db.getCitiesAll():
+            if city.name not in self.citiesCache.keys():
+                self.citiesCache[city.name] = [city.code]
+            else:
+                self.citiesCache[city.name].append(city.code)
 
     def query(self, cname: str):
         """
         query
         :return: query result as string
         """
-        log('user queried ' + cname)
-        if cname not in self.cities.keys():
-            log('City not found!\n')
+        logging.info('user queried ' + cname)
+        if cname not in self.citiesCache.keys():
             similar = self.find_similar(cname)
             if len(similar) > 0:
                 return 'City not found! ' + 'Did you mean:\n' + ','.join(similar)
             else:
                 return 'City not found!\n'
         else:
-            if len(self.cities[cname]) == 1:
-                message = 'The code of ' + cname + ' is ' + self.cities[cname][0]
-                log(message)
+            if len(self.citiesCache[cname]) == 1:
+                message = 'The code of ' + cname + ' is ' + self.citiesCache[cname][0]
+                logging.info(message)
                 return message
             else:
-                message = 'There are' + str(len(self.cities[cname])) + 'cities with the same name:'
-                for code in self.cities[cname]:
+                message = 'There are' + str(len(self.citiesCache[cname])) + 'cities with the same name:'
+                for code in self.citiesCache[cname]:
                     message = message + '\n' + code
-                log(message)
                 return message
 
     def find_similar(self, text):
-        return difflib.get_close_matches(text, self.cities.keys())
+        self.loadFullData()
+        return difflib.get_close_matches(text, self.citiesCache.keys())
 
     def find(self, text):
-        search_result = [item for item in self.cities.keys() if item.find(text) != -1]
+        # search_result = [item for item in self.citiesCache.keys() if item.find(text) != -1]
+        search_result = self.db.getCitiesByName('%{0}%'.format(text))
         if len(search_result) != 0:
-            return '\n'.join(search_result)
+            return '\n'.join([city.name for city in search_result])
         else:
             return self.query(text)
 
@@ -114,8 +88,9 @@ def get_args():
     parser.add_argument('-ver', action='store_true', help='show version')
     parser.add_argument('-find', type=str, help='find cities with substring')
     parser.add_argument('-i', action='store_true', help='show interactive interface')
-    args = parser.parse_args()
-    return args
+    parser.add_argument('-backup', type=str, help='export data to a excel file')
+    parser.add_argument('-createDB', action='store_true', help='initial database from text file')
+    return parser.parse_args()
 
 
 version = 'HiCity v0.3'
@@ -128,16 +103,22 @@ if __name__ == '__main__':
     if args.ver:
         print(version)
 
-    if args.query:
-        hiCity = HiCity(args.data, silent=True)
+    elif args.query:
+        hiCity = HiCity()
         print(hiCity.query(args.query))
-        args.i = False
 
-    if args.find:
-        hiCity = HiCity(args.data, silent=True)
+    elif args.find:
+        hiCity = HiCity()
         print(hiCity.find(args.find))
-        args.i = False
 
-    if args.i:
-        hiCity = HiCity(args.data)
+    elif args.i:
+        hiCity = HiCity()
         hiCity.interact()
+
+    elif args.createDB:
+        hiCity = HiCity()
+        hiCity.db.loadDataFromExternal(dataPath=args.data)
+
+    elif args.backup:
+        hiCity = HiCity()
+        hiCity.db.backupDataToExcel(args.backup)
