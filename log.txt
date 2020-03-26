@@ -1,0 +1,49 @@
+Wed Mar 25 01:05:34 2020 Started loading data...
+Wed Mar 25 01:05:34 2020 Data loaded successfully.
+Wed Mar 25 01:05:34 2020 user queried …Ú—Ù
+Wed Mar 25 01:05:34 2020 The code of …Ú—Ù is 101070101
+Wed Mar 25 01:05:35 2020 Started loading data...
+Wed Mar 25 01:05:35 2020 Data loaded successfully.
+Wed Mar 25 01:05:35 2020 user queried …Ú
+Wed Mar 25 01:05:35 2020 City not found!
+
+Wed Mar 25 01:06:05 2020 Started loading data...
+Wed Mar 25 01:06:05 2020 Data loaded successfully.
+Wed Mar 25 01:07:33 2020 Started loading data...
+Wed Mar 25 01:07:33 2020 Data loaded successfully.
+Wed Mar 25 01:07:34 2020 Started loading data...
+Wed Mar 25 01:07:34 2020 Data loaded successfully.
+Wed Mar 25 01:07:42 2020 Started loading data...
+Wed Mar 25 01:07:42 2020 Data loaded successfully.
+Wed Mar 25 01:07:42 2020 user queried …Ò
+Wed Mar 25 01:07:42 2020 City not found!
+
+Wed Mar 25 01:07:47 2020 Started loading data...
+Wed Mar 25 01:07:47 2020 Data loaded successfully.
+Wed Mar 25 01:09:10 2020 Started loading data...
+Wed Mar 25 01:09:10 2020 Data loaded successfully.
+Wed Mar 25 01:09:15 2020 Started loading data...
+Wed Mar 25 01:09:15 2020 Data loaded successfully.
+Wed Mar 25 01:09:15 2020 user queried …Òœ»
+Wed Mar 25 01:09:15 2020 City not found!
+
+Wed Mar 25 01:09:20 2020 Started loading data...
+Wed Mar 25 01:09:20 2020 Data loaded successfully.
+Wed Mar 25 01:09:20 2020 user queried …Òœ…
+Wed Mar 25 01:09:20 2020 City not found!
+
+Wed Mar 25 01:09:27 2020 Started loading data...
+Wed Mar 25 01:09:27 2020 Data loaded successfully.
+Wed Mar 25 01:09:27 2020 user queried …Ú—Ù1
+Wed Mar 25 01:09:27 2020 City not found!
+
+Wed Mar 25 01:09:38 2020 Started loading data...
+Wed Mar 25 01:09:38 2020 Data loaded successfully.
+Wed Mar 25 01:09:38 2020 user queried …Ú—Ù10
+Wed Mar 25 01:09:38 2020 City not found!
+
+Wed Mar 25 01:09:40 2020 Started loading data...
+Wed Mar 25 01:09:40 2020 Data loaded successfully.
+Wed Mar 25 01:09:40 2020 user queried …Ú—Ù10999
+Wed Mar 25 01:09:40 2020 City not found!
+
