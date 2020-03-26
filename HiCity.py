@@ -118,7 +118,7 @@ def get_args():
     return args
 
 
-version = 'HiCity v0.2'
+version = 'HiCity v0.3'
 
 if __name__ == '__main__':
     args = get_args()

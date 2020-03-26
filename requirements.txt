@@ -1,2 +1,3 @@
+sqlalchemy
 prompt-toolkit==3.0.4
 wcwidth==0.1.9
