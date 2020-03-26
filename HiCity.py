@@ -119,7 +119,7 @@ if __name__ == '__main__':
 
     elif args.backup:
         hiCity = HiCity()
-        hiCity.db.backupDataToExcel(args.backup+'.xls')
+        hiCity.db.backupDataToExcel(args.backup + '.xls')
 
     else:
         print('Invalid argument. Type HiCity --help to see help')
