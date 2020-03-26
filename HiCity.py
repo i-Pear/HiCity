@@ -40,21 +40,21 @@ class HiCity:
         :return: query result as string
         """
         logging.info('user queried ' + cname)
-        if cname not in self.citiesCache.keys():
+        query_result = self.db.getCitiesByName(cname)
+        if len(query_result) == 0:
             similar = self.find_similar(cname)
             if len(similar) > 0:
                 return 'City not found! ' + 'Did you mean:\n' + ','.join(similar)
             else:
                 return 'City not found!\n'
         else:
-            if len(self.citiesCache[cname]) == 1:
-                message = 'The code of ' + cname + ' is ' + self.citiesCache[cname][0]
-                logging.info(message)
+            if len(query_result) == 1:
+                message = 'The code of {0} id {1}'.format(cname, query_result[0].code)
                 return message
             else:
-                message = 'There are' + str(len(self.citiesCache[cname])) + 'cities with the same name:'
-                for code in self.citiesCache[cname]:
-                    message = message + '\n' + code
+                message = 'There are {0} cities with the same name:'.format(len(query_result))
+                for code in [city.code for city in query_result]:
+                    message = message + '\n' + str(code)
                 return message
 
     def find_similar(self, text):
@@ -63,7 +63,7 @@ class HiCity:
 
     def find(self, text):
         # search_result = [item for item in self.citiesCache.keys() if item.find(text) != -1]
-        search_result = self.db.getCitiesByName('%{0}%'.format(text))
+        search_result = self.db.findCitiesByName(text)
         if len(search_result) != 0:
             return '\n'.join([city.name for city in search_result])
         else:
@@ -97,8 +97,6 @@ version = 'HiCity v0.3'
 
 if __name__ == '__main__':
     args = get_args()
-    if not args.ver and not args.query and not args.i and not args.find:
-        print('Invalid argument. Type HiCity --help to see help')
 
     if args.ver:
         print(version)
@@ -121,4 +119,7 @@ if __name__ == '__main__':
 
     elif args.backup:
         hiCity = HiCity()
-        hiCity.db.backupDataToExcel(args.backup)
+        hiCity.db.backupDataToExcel(args.backup+'.xls')
+
+    else:
+        print('Invalid argument. Type HiCity --help to see help')

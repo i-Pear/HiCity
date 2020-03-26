@@ -39,7 +39,7 @@ class DataControl:
     def __init__(self):
         self.engine = create_engine('sqlite:///data.db')
         MyBase.metadata.create_all(self.engine, checkfirst=True)
-        self.session = self.Session = sessionmaker(bind=engine)()
+        self.session = self.Session = sessionmaker(bind=self.engine)()
 
     def addCity(self, code: int, cname: str):
         newItem = City(code=code, name=cname)
@@ -62,6 +62,9 @@ class DataControl:
 
     def getCitiesByName(self, name: str):
         return self.session.query(City).filter_by(name=name).all()
+
+    def findCitiesByName(self, name: str):
+        return self.session.query(City).filter(City.name.like('%{0}%'.format(name))).all()
 
     def backupDataToExcel(self, filename):
         workbook = xlwt.Workbook()
@@ -90,7 +93,7 @@ class DataControl:
                     sp = line.strip().split(',')  # 去除行尾换行并分割
                     if len(sp) != 2:
                         continue  # 处理异常数据
-                    cities.append([sp[0], sp[1]])
+                    cities.append(City(code=int(sp[1]), name=sp[0]))
             self.addCities(cities)
 
             print('Data loaded successfully.\n')
