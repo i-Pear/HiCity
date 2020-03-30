@@ -10,13 +10,13 @@ class HiCity:
     """
     A module for fast querying codes of cities
     """
-    citiesCache = {}
+    citiesCache = []
 
     def __init__(self):
         """
         Load city code data
         """
-        self.completer = CNameCompleter(self.citiesCache.keys())
+        self.completer = CNameCompleter(self.citiesCache)
         self.db = DataControl()
         self._allDataLoaded = False
 
@@ -29,10 +29,8 @@ class HiCity:
             return
         self._allDataLoaded = True
         for city in self.db.getCitiesAll():
-            if city.name not in self.citiesCache.keys():
-                self.citiesCache[city.name] = [city.code]
-            else:
-                self.citiesCache[city.name].append(city.code)
+            if city.name not in self.citiesCache:
+                self.citiesCache.append(city.name)
 
     def query(self, cname: str):
         """
@@ -59,7 +57,7 @@ class HiCity:
 
     def find_similar(self, text):
         self.loadFullData()
-        return difflib.get_close_matches(text, self.citiesCache.keys())
+        return difflib.get_close_matches(text, self.citiesCache)
 
     def find(self, text):
         # search_result = [item for item in self.citiesCache.keys() if item.find(text) != -1]
