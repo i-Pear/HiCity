@@ -73,10 +73,10 @@ class DataControl:
         for row, city in enumerate(cities):
             sheet.write(row, 0, city.name)
             sheet.write(row, 1, city.code)
-        workbook.save(filename)
+        workbook.save(filename+'.xls')
         print('Saved {0} records to excel file.'.format(len(cities)))
 
-    def loadDataFromExternal(self, dataPath: str):
+    def loadDataFromExternal(self, dataPath: str = 'citycode.data', silent=False):
         self.session.query(City).delete()
         logging.info('Database cleared.')
 
@@ -84,11 +84,19 @@ class DataControl:
             logging.info('Started loading data...')
             totalRecord = int(reader.readline())
             cities = []
-            with ProgressBar() as pb:
-                label = 'Loading data'
-                bar = pb(range(1, totalRecord + 1), label=label)
-                for cntRecord in bar:
-                    time.sleep(0.0001)  # delay for display effects
+            if not silent:
+                with ProgressBar() as pb:
+                    label = 'Loading data'
+                    bar = pb(range(1, totalRecord + 1), label=label)
+                    for cntRecord in bar:
+                        time.sleep(0.0001)  # delay for display effects
+                        line = reader.readline()
+                        sp = line.strip().split(',')  # 去除行尾换行并分割
+                        if len(sp) != 2:
+                            continue  # 处理异常数据
+                        cities.append(City(code=int(sp[1]), name=sp[0]))
+            else:
+                for cntRecord in range(1, totalRecord + 1):
                     line = reader.readline()
                     sp = line.strip().split(',')  # 去除行尾换行并分割
                     if len(sp) != 2:

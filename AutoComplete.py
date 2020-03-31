@@ -22,11 +22,13 @@ class CNameCompleter(Completer):
         if len(self.completionCache) == 0:
             self.completionCache = difflib.get_close_matches(text, self.CNamePool)
 
-    def get_completions(self, document, complete_event):
+    def get_completions(self, *args):
         """
         Following the rules in 'prepare_completions', return completions
         """
-        document = document.text_before_cursor
+        document = args[0]
+        if len(args) == 2:
+            document = document.text_before_cursor
         self.prepare_completions(document)
         for item in self.completionCache:
             yield Completion(item, start_position=-len(document))
