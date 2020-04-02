@@ -91,7 +91,7 @@ def get_args():
     return parser.parse_args()
 
 
-version = 'HiCity v0.3'
+version = 'HiCity v0.5'
 
 if __name__ == '__main__':
     args = get_args()

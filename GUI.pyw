@@ -1,6 +1,7 @@
-from HiCity import HiCity
+from HiCity import HiCity, version
 from tkinter import *
 from tkinter import simpledialog
+from Weather import getWeather
 from tkinter.messagebox import *
 from AutoComplete import CNameCompleter
 
@@ -16,7 +17,7 @@ class HiCityApp:
         self.canvas = []
 
         self.window = Tk()
-        self.window.title("HiCity v0.4")
+        self.window.title(version)
         self.set_center(self.window, self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
         self.window.resizable(False, False)
 
@@ -28,7 +29,7 @@ class HiCityApp:
         self.cnameEntry.bind('<KeyRelease>', self.textChanged)
         self.cnameEntry.bind('<Key-Return>', self.keyENTERPressed)
 
-        Label(self.window, text="Type city's name here, press ENTER to get answer :").place(x=7, y=5, anchor=NW)
+        Label(self.window, text="Type city's name here, press ENTER to get info :").place(x=7, y=5, anchor=NW)
 
         Button(self.window, text='Import from database', command=self.buttonImportClicked) \
             .place(x=245, y=80, width=140, height=40)
@@ -46,7 +47,19 @@ class HiCityApp:
             showinfo('Result', 'Saved 2586 records to excel file.')
 
     def keyENTERPressed(self, key):
-        showinfo('Answer', self.core.query(self.cname.get()))
+        # showinfo('Answer', self.core.query(self.cname.get()))
+        code = self.core.db.getCitiesByName(self.cname.get())
+        title = None
+        if len(code) >= 2:
+            info = "Multiple cities with the same name!"
+        elif len(code) == 0:
+            info = "City not found!"
+        else:
+            weather = getWeather(code[0].code)
+            title = weather.cityName + "天气"
+            info = "{0}，最高气温{1}，最低气温{2}\n风力：{3}\n感冒指数：{4}" \
+                .format(weather.type, weather.low, weather.high, weather.wind, weather.ganmao)
+        showinfo('Weather' if title is None else title, info)
 
     def textChanged(self, event):
         # TODO:Should be rewritten with IoC
