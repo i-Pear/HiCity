@@ -15,7 +15,9 @@ def getWeather():
     code = request.args.get('id')
     now = datetime.datetime.now()
     timestamp = '{0}-{1}-{2}'.format(now.year, now.month, now.day)
+    cache=WeatherRecord.qu
 
+    db.session
     response = requests.get("http://wthrcdn.etouch.cn/weather_mini?",
                             params={'citykey': code}).json()
     return response
