@@ -17,8 +17,8 @@ class Weather:
 
 
 def getWeather(code: int):
-    kw = {'citykey': code}
-    response = requests.get("http://wthrcdn.etouch.cn/weather_mini?", params=kw).json()
+    kw = {'id': code}
+    response = requests.get("http://127.0.0.1:8080/weather?", params=kw).json()
     if response['status'] != 1000:
         return Weather()
     return Weather(response['data'])

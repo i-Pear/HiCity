@@ -3,6 +3,7 @@ import datetime
 import requests
 from flask import request
 from .. import app, db
+import json
 
 
 @app.route('/')
@@ -15,9 +16,15 @@ def getWeather():
     code = request.args.get('id')
     now = datetime.datetime.now()
     timestamp = '{0}-{1}-{2}'.format(now.year, now.month, now.day)
-    cache=WeatherRecord.qu
-
-    db.session
-    response = requests.get("http://wthrcdn.etouch.cn/weather_mini?",
-                            params={'citykey': code}).json()
-    return response
+    cache = WeatherRecord.query.filter(WeatherRecord.time == timestamp).first()
+    if cache is not None:
+        print('Using cached data.')
+        return json.loads(cache.data)
+    else:
+        print('Fetching new data...')
+        response = requests.get("http://wthrcdn.etouch.cn/weather_mini?",
+                                params={'citykey': code}).json()
+        data = WeatherRecord(time=timestamp, data=json.dumps(response))
+        db.session.add(data)
+        db.session.commit()
+        return response

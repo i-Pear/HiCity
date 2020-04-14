@@ -1,9 +1,9 @@
 import argparse
 import difflib
 from prompt_toolkit import prompt
-from custom.AutoComplete import CNameCompleter
+from AutoComplete import CNameCompleter
 import logging
-from custom.DataControl import DataControl
+from DataControl import DataControl
 
 
 class HiCity:

@@ -1,7 +1,7 @@
-from custom.HiCity import HiCity, version
+from HiCity import HiCity, version
 from tkinter import *
 from tkinter import simpledialog
-from custom.Weather import getWeather
+from Weather import getWeather
 from tkinter.messagebox import *
 
 
