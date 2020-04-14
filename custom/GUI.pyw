@@ -1,9 +1,8 @@
-from HiCity import HiCity, version
+from custom.HiCity import HiCity, version
 from tkinter import *
 from tkinter import simpledialog
-from Weather import getWeather
+from custom.Weather import getWeather
 from tkinter.messagebox import *
-from AutoComplete import CNameCompleter
 
 
 class HiCityApp:
