@@ -7,24 +7,50 @@ import json
 
 
 @app.route('/')
-def hello_world():
+def hello():
     return 'Service running...'
 
 
 @app.route('/weather', methods=['GET'])
 def getWeather():
     code = request.args.get('id')
+    timestamp = request.args.get('time')
     now = datetime.datetime.now()
-    timestamp = '{0}-{1}-{2}'.format(now.year, now.month, now.day)
-    cache = WeatherRecord.query.filter(WeatherRecord.time == timestamp).first()
+    today = '{0}-{1}-{2}'.format(now.year, now.month, now.day)
+
+    if code is None:
+        return 'id segment is empty!'
+    if timestamp is None:
+        timestamp = today
+
+    cache = WeatherRecord.query.filter(WeatherRecord.id == code, WeatherRecord.time == timestamp).first()
     if cache is not None:
         print('Using cached data.')
         return json.loads(cache.data)
     else:
+        if timestamp != today:
+            return 'history data not found!'
         print('Fetching new data...')
         response = requests.get("http://wthrcdn.etouch.cn/weather_mini?",
                                 params={'citykey': code}).json()
-        data = WeatherRecord(time=timestamp, data=json.dumps(response))
+        data = WeatherRecord(id=code, time=timestamp, data=json.dumps(response))
         db.session.add(data)
         db.session.commit()
         return response
+
+
+@app.route('/weather', methods=['POST'])
+def updateWeather():
+    code = request.args.get('id')
+    now = datetime.datetime.now()
+    timestamp = '{0}-{1}-{2}'.format(now.year, now.month, now.day)
+    cache = WeatherRecord.query.filter(WeatherRecord.id == code, WeatherRecord.time == timestamp).first()
+    if cache is not None:
+        db.session.delete(cache)
+
+    response = requests.get("http://wthrcdn.etouch.cn/weather_mini?",
+                            params={'citykey': code}).json()
+    data = WeatherRecord(id=code, time=timestamp, data=json.dumps(response))
+    db.session.add(data)
+    db.session.commit()
+    return response
