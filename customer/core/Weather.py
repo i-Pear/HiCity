@@ -1,5 +1,3 @@
-import gzip
-
 import requests
 
 
