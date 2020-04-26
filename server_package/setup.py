@@ -11,4 +11,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=True,
+    install_requires=['Flask>=1.1.2',
+                      'Flask-SQLAlchemy>=2.4.1',
+                      'requests>=2.23.0',
+                      'SQLAlchemy>=1.3.16'],
 )
