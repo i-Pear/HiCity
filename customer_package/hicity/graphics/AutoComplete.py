@@ -35,7 +35,7 @@ class CNameCompleter(Completer):
 
 
 if __name__ == '__main__':
-    """ Unit test """
+    """ Unit Tests """
     pool = ['沈阳', '北京', '上海', '深圳']
     completer = CNameCompleter(pool)
     while True:
