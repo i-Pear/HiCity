@@ -1,9 +1,9 @@
 import argparse
 import difflib
 from prompt_toolkit import prompt
-from customer.graphics.AutoComplete import CNameCompleter
+from hicity.graphics.AutoComplete import CNameCompleter
 import logging
-from customer.core.DataControl import DataControl
+from hicity.core.DataControl import DataControl
 
 
 class HiCity:
@@ -81,7 +81,7 @@ class HiCity:
 
 def get_args():
     parser = argparse.ArgumentParser(description='HiCity Agent')
-    parser.add_argument('-data', type=str, default='./customer/core/citycode.data', help='location of the city code data')
+    parser.add_argument('-data', type=str, default='./hicity/core/citycode.data', help='location of the city code data')
     parser.add_argument('-query', type=str, default='', help='city name to query')
     parser.add_argument('-ver', action='store_true', help='show version')
     parser.add_argument('-find', type=str, help='find cities with substring')

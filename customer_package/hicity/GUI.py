@@ -1,4 +1,4 @@
-from customer.graphics.graphics import HiCityGUI
+from hicity.graphics.graphics import HiCityGUI
 
 
 def GUI():

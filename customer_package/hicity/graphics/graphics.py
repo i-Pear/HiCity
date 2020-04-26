@@ -1,7 +1,7 @@
-from customer.core.core import HiCity, version
+from hicity.core.core import HiCity, version
 from tkinter import *
 from tkinter import simpledialog
-from customer.core.Weather import getWeather
+from hicity.core.Weather import getWeather
 from tkinter.messagebox import *
 
 
