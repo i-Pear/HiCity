@@ -1,5 +1,10 @@
-from graphics.graphics import HiCityGUI
+from customer.graphics.graphics import HiCityGUI
 
-if __name__ == '__main__':
+
+def GUI():
     app = HiCityGUI()
     app.mainloop()
+
+
+if __name__ == '__main__':
+    GUI()
