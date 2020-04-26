@@ -1,10 +1,10 @@
-from weather import app
+from hicityserver.weather import app
 
 
-def run_develpoment():
+def run_development():
     app.static_folder = 'static'
     app.run(port=8080, debug=True)
 
 
 if __name__ == '__main__':
-    run_develpoment()
+    run_development()

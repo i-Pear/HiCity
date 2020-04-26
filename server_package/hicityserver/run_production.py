@@ -1,10 +1,10 @@
-from weather import app, db
+from hicityserver.weather import app, db
 
 
 def run_production():
     # init database
     db.create_all()
-    # start server
+    # start hicityserver
     from gevent.pywsgi import WSGIServer
 
     WSGIServer(('127.0.0.1', 8080), app).serve_forever()

@@ -1,4 +1,4 @@
-from weather import db
+from hicityserver.weather import db
 
 
 class WeatherRecord(db.Model):

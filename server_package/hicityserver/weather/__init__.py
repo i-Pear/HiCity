@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 # load configuration
-app.config.from_object('configuration')
+app.config.from_object('hicityserver.configuration')
 
 # handling database
 db = SQLAlchemy(app)
