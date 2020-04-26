@@ -14,5 +14,6 @@ setup(
     install_requires=['Flask>=1.1.2',
                       'Flask-SQLAlchemy>=2.4.1',
                       'requests>=2.23.0',
-                      'SQLAlchemy>=1.3.16'],
+                      'SQLAlchemy>=1.3.16',
+                      'gevent>=20.4.0'],
 )

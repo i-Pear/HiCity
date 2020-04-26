@@ -125,3 +125,4 @@ dmypy.json
 .pyre/
 
 .idea/
+server_package/hicityserver/weather/database.db3
