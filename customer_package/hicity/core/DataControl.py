@@ -2,6 +2,7 @@ import os
 import sys
 import time
 
+import pkg_resources
 import xlwt
 from prompt_toolkit.shortcuts import ProgressBar
 from sqlalchemy import *
@@ -73,14 +74,15 @@ class DataControl:
         for row, city in enumerate(cities):
             sheet.write(row, 0, city.name)
             sheet.write(row, 1, city.code)
-        workbook.save(filename+'.xls')
+        workbook.save(filename + '.xls')
         print('Saved {0} records to excel file.'.format(len(cities)))
 
-    def loadDataFromExternal(self, dataPath: str = './hicity/core/citycode.data', silent=False):
+    def loadDataFromExternal(self, dataPath: str = pkg_resources.resource_filename('hicity', 'core/citycode.data'),
+                             silent=False):
         self.session.query(City).delete()
         logging.info('Database cleared.')
 
-        with open(resource_path(dataPath), 'r', encoding='UTF-8') as reader:
+        with open(dataPath, 'r', encoding='UTF-8') as reader:
             logging.info('Started loading data...')
             totalRecord = int(reader.readline())
             cities = []

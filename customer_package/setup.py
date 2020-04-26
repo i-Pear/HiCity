@@ -11,6 +11,9 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=True,
+    data_files=[
+        './hicity/core/citycode.data'
+    ],
     install_requires=[
         'prompt-toolkit>=3.0.5',
         'requests>=2.23.0',
