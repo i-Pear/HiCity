@@ -76,7 +76,7 @@ class DataControl:
         workbook.save(filename+'.xls')
         print('Saved {0} records to excel file.'.format(len(cities)))
 
-    def loadDataFromExternal(self, dataPath: str = 'citycode.data', silent=False):
+    def loadDataFromExternal(self, dataPath: str = './customer/core/citycode.data', silent=False):
         self.session.query(City).delete()
         logging.info('Database cleared.')
 

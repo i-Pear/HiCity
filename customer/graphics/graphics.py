@@ -1,4 +1,4 @@
-from HiCity import HiCity, version
+from core.core import HiCity, version
 from tkinter import *
 from tkinter import simpledialog
 from core.Weather import getWeather

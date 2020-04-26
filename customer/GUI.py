@@ -1,4 +1,4 @@
-from GUI.graphics import HiCityGUI
+from graphics.graphics import HiCityGUI
 
 if __name__ == '__main__':
     app = HiCityGUI()
