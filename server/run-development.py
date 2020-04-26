@@ -1,5 +1,10 @@
 from weather import app
 
-if __name__ == '__main__':
+
+def run_develpoment():
     app.static_folder = 'static'
     app.run(port=8080, debug=True)
+
+
+if __name__ == '__main__':
+    run_develpoment()
