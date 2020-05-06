@@ -1,14 +1,22 @@
 from ..model import WeatherRecord
 import datetime
+import time
 import requests
-from flask import request
+from flask import request, render_template
 from .. import app, db
 import json
+from multiprocessing import Process
+
+
+def heavyLoad():
+    time.sleep(10)
+    print('slept 10s')
 
 
 @app.route('/')
 def hello():
-    return 'Service running...'
+    Process(target=heavyLoad).start()
+    return render_template('index.html')
 
 
 @app.route('/weather', methods=['GET'])
